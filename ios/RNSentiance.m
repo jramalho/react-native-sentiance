@@ -22,7 +22,7 @@ RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"SDKStatusUpdate", @"TripTimeout", @"SDKMetaUserLink", @"UserActivity"];
+    return @[@"SDKStatusUpdate", @"SDKTripTimeout", @"SDKMetaUserLink", @"SDKUserActivityUpdate"];
 }
 
 // Will be called when this module's first listener is added.
@@ -369,30 +369,31 @@ RCT_EXPORT_METHOD(deleteKeychainEntries:(RCTPromiseResolveBlock)resolve rejecter
     [self deleteAllKeysForSecClass:kSecClassIdentity];
 }
 
--(void)deleteAllKeysForSecClass:(CFTypeRef)secClass {
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    [dict setObject:(__bridge id)secClass forKey:(__bridge id)kSecClass];
-    SecItemDelete((__bridge CFDictionaryRef) dict);
-}
-
-- (void)tripTimeoutReceived
+RCT_EXPORT_METHOD(listenUserActivityUpdates)
 {
-    __weak typeof(self) weakSelf = self;
-    [[SENTSDK sharedInstance] setTripTimeOutListener:^ {
-        if (weakSelf.hasListeners) {
-            [weakSelf sendEventWithName:@"TripTimeout" body:nil];
-        }
-    }];
-}
-
-- (void)userActivityReceived {
     __weak typeof(self) weakSelf = self;
     [[SENTSDK sharedInstance] setUserActivityListerner:^(SENTUserActivity *userActivity) {
         NSDictionary *userActivityDict = [self convertUserActivityToDict:userActivity];
         if(weakSelf.hasListeners) {
-            [weakSelf sendEventWithName:@"UserActivity" body:userActivityDict];
+            [weakSelf sendEventWithName:@"SDKUserActivityUpdate" body:userActivityDict];
         }
     }];
+}
+
+RCT_EXPORT_METHOD(listenTripTimeout)
+{
+    __weak typeof(self) weakSelf = self;
+    [[SENTSDK sharedInstance] setTripTimeOutListener:^ {
+        if (weakSelf.hasListeners) {
+            [weakSelf sendEventWithName:@"SDKTripTimeout" body:nil];
+        }
+    }];
+}
+
+-(void)deleteAllKeysForSecClass:(CFTypeRef)secClass {
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    [dict setObject:(__bridge id)secClass forKey:(__bridge id)kSecClass];
+    SecItemDelete((__bridge CFDictionaryRef) dict);
 }
 
 - (NSDictionary*)convertUserActivityToDict:(SENTUserActivity*)userActivity {
