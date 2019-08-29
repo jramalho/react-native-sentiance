@@ -226,10 +226,10 @@ public class RNSentianceHelper {
     ApplicationInfo info;
     try {
       info = context.getPackageManager().getApplicationInfo(
-        context.getPackageName(), PackageManager.GET_META_DATA);
-      channelName = getStringMetadataFromManifest(info, "com.sentiance.sdk.notification_channel_name", channelName);
-      icon = getIntMetadataFromManifest(info, "com.sentiance.sdk.notification_icon", icon);
-      channelId = getStringMetadataFromManifest(info, "com.sentiance.sdk.channel_id", channelId);
+              context.getPackageName(), PackageManager.GET_META_DATA);
+      channelName = getStringMetadataFromManifest(info, "com.sentiance.react.bridge.notification_channel_name", channelName);
+      icon = getIntMetadataFromManifest(info, "com.sentiance.react.bridge.notification_icon", icon);
+      channelId = getStringMetadataFromManifest(info, "com.sentiance.react.bridge.channel_id", channelId);
     } catch (PackageManager.NameNotFoundException e) {
       e.printStackTrace();
     }
@@ -257,12 +257,12 @@ public class RNSentianceHelper {
     ApplicationInfo info;
     try {
       info = context.getPackageManager().getApplicationInfo(
-        context.getPackageName(), PackageManager.GET_META_DATA);
-      title = getStringMetadataFromManifest(info, "com.sentiance.sdk.notification_title", title);
-      message = getStringMetadataFromManifest(info, "com.sentiance.sdk.notification_text", message);
-      channelName = getStringMetadataFromManifest(info, "com.sentiance.sdk.notification_channel_name", channelName);
-      icon = getIntMetadataFromManifest(info, "com.sentiance.sdk.notification_icon", icon);
-      channelId = getStringMetadataFromManifest(info, "com.sentiance.sdk.channel_id", channelId);
+              context.getPackageName(), PackageManager.GET_META_DATA);
+      title = getStringMetadataFromManifest(info, "com.sentiance.react.bridge.notification_title", title);
+      message = getStringMetadataFromManifest(info, "com.sentiance.react.bridge.notification_text", message);
+      channelName = getStringMetadataFromManifest(info, "com.sentiance.react.bridge.notification_channel_name", channelName);
+      icon = getIntMetadataFromManifest(info, "com.sentiance.react.bridge.notification_icon", icon);
+      channelId = getStringMetadataFromManifest(info, "com.sentiance.react.bridge.channel_id", channelId);
     } catch (PackageManager.NameNotFoundException e) {
       e.printStackTrace();
     }
